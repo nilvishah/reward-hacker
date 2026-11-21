@@ -14,12 +14,14 @@ PPO (Stable-Baselines3, `MlpPolicy`) trained for 1M steps on the built-in reward
 
 | Metric | Value |
 |---|---|
-| Mean score | XX ± XX |
-| Solved rate (≥200) | XX% |
-| Landed | XX% |
-| Crashed | XX% |
-| Timed out (hovering) | XX% |
-| Mean episode length | XX frames |
+| Mean score | 258.3 ± 44.3 |
+| Solved rate (≥200) | 95% |
+| Landed | 95% |
+| Crashed | 5% |
+| Timed out (hovering) | 0% |
+| Mean episode length | 283 frames |
+| Main engine frames (mean) | 105.5 |
+| Side engine frames (mean) | 50.3 |
 
 ## Scripts
 
