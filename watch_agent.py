@@ -1,8 +1,9 @@
 import gymnasium as gym
 from stable_baselines3 import PPO
+import sys 
 
 env = gym.make("LunarLander-v3", render_mode="human")
-model = PPO.load("ppo_lunar_baseline")
+model = PPO.load(sys.argv[1] if len(sys.argv) > 1 else "ppo_lunar_baseline")
 
 for episode in range(5):
     obs, info = env.reset()
