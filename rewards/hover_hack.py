@@ -1,4 +1,4 @@
-def compute_bonus(obs, action, base_reward, terminated, truncated) -> float:
+def compute_bonus(obs, prev_obs, action, base_reward, terminated, truncated) -> float:
     """Deliberately broken: +1 every frame the lander is upright and slow.
 
     Hovering in place for 1,000 frames earns far more than landing,
