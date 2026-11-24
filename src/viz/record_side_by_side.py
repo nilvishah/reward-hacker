@@ -11,7 +11,7 @@ import imageio
 import pygame
 from stable_baselines3 import PPO
 
-from preview_style import W, H, draw_scene, make_background, to_screen
+from src.viz.preview_style import W, H, draw_scene, make_background, to_screen
 
 
 class Runner:

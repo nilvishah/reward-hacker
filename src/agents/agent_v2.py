@@ -10,8 +10,8 @@ import anthropic
 import numpy as np
 from dotenv import load_dotenv
 
-from agent import SYSTEM, TOOLS, detect_hacking
-from evaluate import evaluate
+from src.agents.agent import SYSTEM, TOOLS, detect_hacking
+from src.eval.evaluate import evaluate
 from validator import validate
 
 load_dotenv()

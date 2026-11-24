@@ -9,7 +9,7 @@ import gymnasium as gym
 import pygame
 from stable_baselines3 import PPO
 
-from preview_style import W, H, glow, make_background, to_screen
+from src.viz.preview_style import W, H, glow, make_background, to_screen
 
 COLORS = {"landed": (90, 255, 140), "crashed": (255, 80, 80), "timeout": (255, 170, 60)}
 

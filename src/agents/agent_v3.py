@@ -8,9 +8,9 @@ import anthropic
 import numpy as np
 from dotenv import load_dotenv
 
-from agent import SYSTEM, TOOLS, detect_hacking
-from critic import review
-from evaluate import evaluate
+from src.agents.agent import SYSTEM, TOOLS, detect_hacking
+from src.agents.critic import review
+from src.eval.evaluate import evaluate
 from validator import validate
 
 load_dotenv()
@@ -50,7 +50,7 @@ def train_and_eval(reward: str) -> dict:
     """Train on all seeds inside the Docker sandbox, then evaluate on the host."""
     procs = [
         subprocess.Popen(
-            [sys.executable, "sandbox.py", "--reward", reward, "--seed", str(s)],
+            [sys.executable, "src/sandbox/sandbox.py", "--reward", reward, "--seed", str(s)],
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
         )
         for s in SEEDS

@@ -12,7 +12,6 @@ ATTACKS = {
     "tamper_models": "def compute_bonus(obs, prev_obs, action, base_reward, terminated, truncated):\n    open('models/canary.txt', 'w').write('tampered')\n    return 0.0\n",
 }
 
-sys.path.insert(0, ".")
 from validator import validate
 
 
@@ -27,7 +26,7 @@ def run_one(name, code):
     canary.write_text("intact")
 
     proc = subprocess.run(
-        [sys.executable, "sandbox.py", "--reward", f"sec_{name}", "--seed", "0", "--steps", "2000"],
+        [sys.executable, "src/sandbox/sandbox.py", "--reward", f"sec_{name}", "--seed", "0", "--steps", "2000"],
         capture_output=True, text=True, timeout=120,
     )
     if not (canary.exists() and canary.read_text() == "intact"):

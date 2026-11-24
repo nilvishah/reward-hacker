@@ -7,6 +7,6 @@ for reward in none hover_hack hover_fixed; do
     if [ ! -f "${model}.zip" ]; then
       python3 train_with_reward.py --reward "$reward" --seed "$seed"
     fi
-    python3 evaluate.py --model "$model"
+    python3 src/eval/evaluate.py --model "$model"
   done
 done

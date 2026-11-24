@@ -41,26 +41,26 @@ Both stopped the hovering, but neither beat the built-in reward. The first fix l
 
 ## 3. Two AI agents
 
-- **Designer** (`agent.py`, `agent_v2.py`, `agent_v3.py`): writes a reward, trains on it, reads the results, and tries again. v1 tested each idea on one seed and was fooled by a lucky run (273 on one seed, 194 across three). v2 and v3 judge every idea across 3 seeds.
-- **Critic** (`critic.py`): reviews each reward *before* training and predicts how the agent might cheat it. It flagged the hover exploit from the code alone and cleared the safe rewards. It is a useful guard, not an oracle: it missed one subtle side-effect (a penalty-only reward that caused fidgeting rather than an exploit).
+- **Designer** (`src/agents/agent.py`, `agent_v2.py`, `agent_v3.py`): writes a reward, trains on it, reads the results, and tries again. v1 tested each idea on one seed and was fooled by a lucky run (273 on one seed, 194 across three). v2 and v3 judge every idea across 3 seeds.
+- **Critic** (`src/agents/critic.py`): reviews each reward *before* training and predicts how the agent might cheat it. It flagged the hover exploit from the code alone and cleared the safe rewards. It is a useful guard, not an oracle: it missed one subtle side-effect (a penalty-only reward that caused fidgeting rather than an exploit).
 
-In the combined loop (`agent_v3.py`), the Designer's reward is validated, reviewed by the Critic, then trained across 3 sandboxed seeds, and a detector flags hacking in the results.
+In the combined loop (`src/agents/agent_v3.py`), the Designer's reward is validated, reviewed by the Critic, then trained across 3 sandboxed seeds, and a detector flags hacking in the results.
 
 ## 4. Safety
 
 Every reward, hand-written or AI-written, passes two layers before it can affect the machine:
 
 - **Validator** (`validator.py`): parses the code without running it and blocks imports other than `math`, file and system access, `eval`/`exec`/`__import__`, private attributes, global state, `while` loops, and wrong signatures. Then it smoke-tests the function in a separate process with a timeout.
-- **Docker sandbox** (`Dockerfile`, `sandbox.py`): training runs in a container with no network, a read-only filesystem, dropped Linux capabilities, no-new-privileges, and memory/CPU/time limits. It cannot see the host's files, including API keys.
+- **Docker sandbox** (`Dockerfile`, `src/sandbox/sandbox.py`): training runs in a container with no network, a read-only filesystem, dropped Linux capabilities, no-new-privileges, and memory/CPU/time limits. It cannot see the host's files, including API keys.
 
-`security_test.py` runs six escape attempts against this setup, from reading the `.env` file to calling the network to an infinite loop. All six are blocked.
+`src/sandbox/security_test.py` runs six escape attempts against this setup, from reading the `.env` file to calling the network to an infinite loop. All six are blocked.
 
 ## Scripts
 
-- `train_with_reward.py`, `evaluate.py`: validated training and the fixed evaluator
-- `validator.py`, `sandbox.py`, `security_test.py`: the safety layers and their tests
-- `agent.py`, `agent_v2.py`, `agent_v3.py`, `critic.py`: the Designer and Critic agents
-- `preview_style.py`, `record_side_by_side.py`, `ghost_trails.py`: visuals
+- `train_with_reward.py`, `src/eval/evaluate.py`: validated training and the fixed evaluator
+- `validator.py`, `src/sandbox/sandbox.py`, `src/sandbox/security_test.py`: the safety layers and their tests
+- `src/agents/`: the Designer (`agent.py`, `agent_v2.py`, `agent_v3.py`) and Critic (`critic.py`) agents
+- `src/viz/`: visuals (`preview_style.py`, `record_side_by_side.py`, `ghost_trails.py`)
 - `rewards/`: every reward tested, including all agent-written ones
 
 ## Run it
@@ -70,5 +70,5 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 echo 'ANTHROPIC_API_KEY="your-key"' > .env
 docker build -t reward-sandbox .
-python3 agent_v3.py
+python3 -m src.agents.agent_v3   # run all scripts from the repo root
 ```

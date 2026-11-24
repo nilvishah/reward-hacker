@@ -8,7 +8,7 @@ from pathlib import Path
 import anthropic
 from dotenv import load_dotenv
 
-from evaluate import evaluate
+from src.eval.evaluate import evaluate
 from validator import validate
 
 load_dotenv()
